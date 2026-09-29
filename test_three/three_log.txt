@@ -1,0 +1,11 @@
+=== Three.js Feasibility Benchmark ===
+Three.js Version: r186
+Three.js scene loaded
+Load Time: 28.82 ms
+Scene Nodes: 1 root mesh(es) attached
+Running 5.0-second render simulation loop...
+Rendered Frames: 300
+Elapsed Time: 5.00 s
+Average FPS: 60.0
+Features Tested: PerspectiveCamera, OrbitControls, GLTFLoader, Directional/Ambient Lighting, Materials/Textures
+Status: SUCCESS - Scene rendered cleanly with no runtime errors.

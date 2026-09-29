@@ -1,0 +1,29 @@
+{
+  "name": "afterlight",
+  "version": "0.2.0",
+  "type": "module",
+  "private": true,
+  "description": "Afterlight - Atmospheric 3D Web Game (Phase 2 Baseline)",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 3000",
+    "start": "vite --host 0.0.0.0 --port 3000",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 3000",
+    "test": "node scripts/verify.mjs && node scripts/test_foundation.mjs && node scripts/test_phase2.mjs",
+    "test:phase0": "node scripts/verify.mjs",
+    "test:phase1": "node scripts/test_foundation.mjs",
+    "test:phase2": "node scripts/test_phase2.mjs"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^9.28.0",
+    "@babylonjs/gui": "^9.28.0",
+    "@babylonjs/loaders": "^9.28.0",
+    "@babylonjs/materials": "^9.28.0"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0",
+    "playcanvas": "^2.22.4",
+    "three": "^0.186.1",
+    "vite": "^6.0.0"
+  }
+}

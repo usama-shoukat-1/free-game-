@@ -1,0 +1,11 @@
+=== Babylon.js Feasibility Benchmark ===
+Babylon.js Version: 9.28.0
+Babylon.js scene loaded
+Load Time: 17.22 ms
+Meshes imported: 2
+Running 5.0-second render simulation loop...
+Rendered Frames: 300
+Elapsed Time: 5.00 s
+Average FPS: 60.0
+Features Tested: ArcRotateCamera, SceneLoader.ImportMesh, Directional/Hemispheric Light, Materials/Textures, NullEngine
+Status: SUCCESS - Scene rendered cleanly with no runtime errors.

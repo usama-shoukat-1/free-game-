@@ -1,0 +1,11 @@
+=== PlayCanvas Feasibility Benchmark ===
+PlayCanvas Engine Version: 2.22.4
+PlayCanvas scene loaded
+Load Time: 15.58 ms
+Application Entities: Root has 2 active child node(s)
+Running 5.0-second render simulation loop...
+Rendered Frames: 300
+Elapsed Time: 5.01 s
+Average FPS: 59.9
+Features Tested: pc.Application, CameraComponent, LightComponent, pc.Asset('container'), NullGraphicsDevice
+Status: SUCCESS - Scene rendered cleanly with no runtime errors.

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Feasibility Test - Afterlight</title>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; background: #0b0e14; font-family: monospace; color: #fff; }
+        #canvas-container { width: 100vw; height: 100vh; display: block; }
+        #overlay {
+            position: absolute; top: 16px; left: 16px; z-index: 10;
+            background: rgba(10, 15, 25, 0.85); border: 1px solid #38bdf8;
+            padding: 14px 20px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        h2 { margin: 0 0 8px 0; font-size: 16px; color: #38bdf8; }
+        p { margin: 4px 0; font-size: 13px; }
+        #fps-display { font-size: 18px; font-weight: bold; color: #4ade80; }
+    </style>
+    <!-- Import map for Three.js -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.186.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.186.1/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="overlay">
+        <h2>Afterlight - Three.js Gate Benchmark</h2>
+        <p>Engine: <span>Three.js v0.186.1</span></p>
+        <p>FPS: <span id="fps-display">Measuring...</span></p>
+        <p>Load Time: <span id="load-time">Loading...</span></p>
+        <p>Status: <span id="status">Initializing scene...</span></p>
+    </div>
+    <div id="canvas-container"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

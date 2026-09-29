@@ -1,0 +1,610 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+html, body, #app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #03060a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #e2e8f0;
+}
+
+#renderCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
+  outline: none;
+  display: block;
+}
+
+/* Base Top UI Banner */
+#ui-container {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.game-header {
+  background: rgba(10, 16, 28, 0.75);
+  backdrop-filter: blur(12px);
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.game-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.game-subtitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+}
+
+.engine-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  color: #f1f5f9;
+  width: fit-content;
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+/* ========================================================
+   IN-GAME PRODUCTION HUD
+   ======================================================== */
+.game-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Mission Objective (Top Center) */
+.hud-objective-box {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(10, 16, 28, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 10px 24px;
+  border-radius: 30px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+}
+
+.hud-obj-icon {
+  font-size: 18px;
+  color: #38bdf8;
+  animation: pulse 1.5s infinite;
+}
+
+.hud-obj-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-obj-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.hud-obj-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+/* Interaction Prompt (Center-Bottom) */
+.hud-prompt-box {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #38bdf8;
+  padding: 8px 18px;
+  border-radius: 24px;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+  animation: promptPulse 1.2s infinite alternate;
+}
+
+.hud-prompt-box.hidden {
+  display: none !important;
+}
+
+.hud-key-badge {
+  background: #38bdf8;
+  color: #0b111e;
+  font-weight: 800;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.hud-prompt-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Vitals Panel (Bottom Left) */
+.hud-vitals {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hud-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.hud-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hud-bar-fill.health {
+  height: 100%;
+  background: linear-gradient(90deg, #ef4444, #38bdf8);
+  transition: width 0.15s ease-out;
+}
+
+.hud-bar-fill.stamina {
+  height: 100%;
+  background: linear-gradient(90deg, #eab308, #22c55e);
+  transition: width 0.1s ease-out;
+}
+
+.hud-gadget-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 16, 28, 0.7);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: monospace;
+  color: #94a3b8;
+}
+
+.hud-mini-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.hud-mini-fill {
+  height: 100%;
+  background: #38bdf8;
+  transition: width 0.2s ease;
+}
+
+/* Loadout (Bottom Right) */
+.hud-loadout {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.hud-quick-item {
+  background: rgba(10, 16, 28, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.hud-key-small {
+  background: #1e293b;
+  border: 1px solid #475569;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #38bdf8;
+}
+
+.hud-item-badge {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.hud-weapon-box {
+  background: rgba(10, 16, 28, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 10px 18px;
+  border-radius: 10px;
+  text-align: right;
+  min-width: 140px;
+}
+
+.hud-weapon-name {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.hud-ammo-readout {
+  font-size: 24px;
+  font-weight: 900;
+  font-family: monospace;
+  color: #f8fafc;
+}
+
+.hud-ammo-cur { color: #38bdf8; }
+.hud-ammo-sep { color: #64748b; margin: 0 2px; }
+.hud-ammo-res { color: #94a3b8; font-size: 16px; }
+
+.hud-reload-text {
+  font-size: 10px;
+  color: #f59e0b;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  animation: pulse 0.8s infinite;
+}
+.hud-reload-text.hidden { display: none; }
+
+/* Crosshair Reticle */
+.hud-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: all 0.15s ease;
+}
+
+.hud-crosshair .dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #38bdf8;
+}
+
+.hud-crosshair.aiming {
+  opacity: 0.9;
+  width: 8px;
+  height: 8px;
+}
+
+/* Damage Flash Vignette */
+.hud-damage-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  box-shadow: inset 0 0 80px rgba(239, 68, 68, 0);
+  pointer-events: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.hud-damage-vignette.flash {
+  box-shadow: inset 0 0 100px rgba(239, 68, 68, 0.7);
+}
+
+/* Death Screen */
+.hud-death-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 2, 4, 0.88);
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.hud-death-screen.hidden { display: none !important; }
+
+.death-title {
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: #ef4444;
+  text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+}
+
+.death-sub {
+  font-size: 14px;
+  color: #94a3b8;
+  letter-spacing: 0.1em;
+}
+
+.death-respawn-btn {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* ========================================================
+   MOBILE ON-SCREEN TOUCH CONTROLS
+   ======================================================== */
+.mobile-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.mobile-controls.hidden { display: none !important; }
+
+/* Left Joystick Area */
+.joystick-zone {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 45vw;
+  height: 60vh;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.joystick-base {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  margin-left: -60px;
+  margin-top: -60px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.4);
+  border: 2px solid rgba(56, 189, 248, 0.4);
+  display: none;
+  pointer-events: none;
+}
+
+.joystick-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  margin-left: -25px;
+  margin-top: -25px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.7);
+  box-shadow: 0 0 12px #38bdf8;
+  pointer-events: none;
+}
+
+/* Right Camera Look Swipe Area */
+.camera-swipe-zone {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55vw;
+  height: 60vh;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* Mobile Action Buttons Grid */
+.mobile-actions-grid {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.m-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #f1f5f9;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  touch-action: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.1s, background 0.1s;
+}
+
+.m-btn.active, .m-btn:active {
+  transform: scale(0.92);
+  background: rgba(56, 189, 248, 0.8);
+  color: #0b111e;
+}
+
+.m-btn.fire {
+  background: rgba(239, 68, 68, 0.7);
+  border-color: #ef4444;
+}
+.m-btn.interact {
+  background: rgba(34, 197, 94, 0.65);
+  border-color: #22c55e;
+}
+.m-btn.aim {
+  border-color: #a855f7;
+}
+
+/* Developer Telemetry Panel (F3) */
+.debug-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 30;
+  width: 280px;
+  background: rgba(10, 16, 30, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  padding: 14px;
+  font-family: 'SF Mono', Consolas, Monaco, monospace;
+  font-size: 11px;
+}
+
+.debug-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.debug-title { color: #38bdf8; font-weight: 700; }
+.debug-toggle { color: #64748b; cursor: pointer; font-size: 10px; }
+
+.debug-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.debug-row .k { color: #94a3b8; }
+.debug-row .v { color: #f1f5f9; font-weight: 600; }
+
+.debug-select {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #38bdf8;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.debug-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dbg-btn {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #38bdf8;
+  color: #f8fafc;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.dbg-btn:hover {
+  background: #38bdf8;
+  color: #0f172a;
+}
